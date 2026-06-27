@@ -5,9 +5,15 @@ from cidy.reference.sdg import SDGFramework
 from cidy.schema.models import Constraints
 
 
-def _sort_key(code: str) -> tuple[int, int]:
+def _sort_key(code: str) -> tuple[int, int, int, str]:
     goal, _, target = code.partition(".")
-    return (int(goal), int(target or 0))
+    try:
+        g = int(goal)
+    except ValueError:
+        return (10**9, 1, 0, code)  # unparseable codes sort last, deterministically
+    if target.isdigit():
+        return (g, 0, int(target), "")
+    return (g, 1, 0, target)
 
 
 def validate_sdg_target_list(

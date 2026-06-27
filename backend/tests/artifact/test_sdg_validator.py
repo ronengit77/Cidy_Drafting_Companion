@@ -44,3 +44,26 @@ def test_not_ascending_flagged():
 
 def test_none_is_ok():
     assert validate_sdg_target_list(None, Constraints(), FW, "s.f") == []
+
+
+def test_lettered_targets_sorted_after_numeric_ascending():
+    fw = load_sdg_framework(
+        {
+            "goals": [
+                {"goal": 1, "title": "No Poverty", "targets": [
+                    {"target": "1.1", "text": "..."},
+                    {"target": "1.a", "text": "..."},
+                ]},
+                {"goal": 8, "title": "Decent Work", "targets": [
+                    {"target": "8.5", "text": "..."},
+                    {"target": "8.a", "text": "..."},
+                ]},
+            ]
+        }
+    )
+    c = Constraints(order="ascending")
+    # numeric-before-lettered within a goal, goals ascending -> valid, no crash
+    assert validate_sdg_target_list(["1.1", "1.a", "8.5", "8.a"], c, fw, "s.f") == []
+    # lettered before its own numeric sibling -> not ascending
+    issues = validate_sdg_target_list(["1.a", "1.1"], c, fw, "s.f")
+    assert any("ascending" in i.message for i in issues)
