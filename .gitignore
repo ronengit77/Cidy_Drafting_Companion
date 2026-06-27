@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+.venv/
+__pycache__/
+*.py[cod]
+
+# Build / deploy
+dist/
+build/
+.aws-sam/
+*.zip
+
+# Env & secrets
+.env
+.env.*
+*.local
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+
+# Local artifacts / temp exports
+/tmp/
+*.tmp
