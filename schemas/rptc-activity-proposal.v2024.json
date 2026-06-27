@@ -1,0 +1,153 @@
+{
+  "schema_id": "rptc-activity-proposal",
+  "version": "2024",
+  "fund": "RPTC",
+  "artifact_type": "activity_proposal",
+  "title": "RPTC Activity Proposal",
+  "sections": [
+    {
+      "id": "cover_sheet",
+      "title": "Cover Sheet",
+      "fields": [
+        {"id": "project_id", "label": "Project ID (SB-XX)", "type": "text", "guidance": "To be filled by CDPMO Finance team."},
+        {"id": "implementing_division", "label": "Implementing Division", "type": "text", "guidance": "Select lead division.", "constraints": {"required": true}},
+        {"id": "branch_name", "label": "Branch Name", "type": "text"},
+        {"id": "title_of_activity", "label": "Title of the activity", "type": "text", "constraints": {"required": true}},
+        {"id": "brief_description", "label": "Brief description of proposal", "type": "rich_text", "guidance": "300 words max.", "constraints": {"required": true, "max_words": 300}},
+        {"id": "proposed_budget", "label": "Proposed Budget (USD)", "type": "currency", "guidance": "Numbers only, no $ sign required.", "constraints": {"required": true, "min_value": 0}},
+        {"id": "planned_start_quarter", "label": "Planned Start Quarter", "type": "quarter_year", "guidance": "Planned start date of activity. If event, put same date on start/end dates."},
+        {"id": "planned_end_quarter", "label": "Planned End Date Quarter", "type": "quarter_year"},
+        {"id": "focal_point_name", "label": "Focal point name", "type": "text", "constraints": {"required": true}},
+        {"id": "focal_point_email", "label": "Focal point email", "type": "text", "constraints": {"required": true}},
+        {"id": "level_of_intervention", "label": "Level of intervention", "type": "single_select", "guidance": "Select one of the geographical level of intervention most applicable. See reporting standards [Under Geographic coverage 1].", "constraints": {"options": ["Global", "Regional", "Sub regional", "National"]}},
+        {"id": "countries", "label": "Countries", "type": "multi_select", "guidance": "Please select countries which have been specifically targeted for support. See reporting standards [Under Geographic coverage 2].", "constraints": {"options": []}},
+        {"id": "nature_of_demand", "label": "Nature of demand", "type": "text", "guidance": "Request; Voluntary National Review (VNR); UN Sustainable Development Cooperation Framework (UNDSCF); Other."},
+        {"id": "meeting_type", "label": "Meeting Type", "type": "single_select", "guidance": "“N/A” for activities not involving a meeting.", "constraints": {"options": ["In person", "Virtual", "N/A"]}},
+        {"id": "venue_location", "label": "Venue Location", "type": "text", "guidance": "If selected in person above: Country, City."},
+        {"id": "division_director_signoff", "label": "Signature and date: Director, Division", "type": "text"},
+        {"id": "cdpmo_head_signoff", "label": "Signature and date: Head, Capacity Development Programme Management Office", "type": "text"}
+      ]
+    },
+    {
+      "id": "problem_analysis",
+      "title": "Problem analysis",
+      "guidance": "Please describe as specifically and concisely as possible the problem this RPTC activity would contribute to addressing.",
+      "fields": [
+        {"id": "problem_analysis", "label": "Problem analysis", "type": "rich_text", "constraints": {"required": true}}
+      ]
+    },
+    {
+      "id": "desa_mandate",
+      "title": "DESA mandate and expected results",
+      "guidance": "List one or two of the main mandates for this work at DESA. Briefly describe how the RPTC activity would contribute to the priorities of the implementing Division. List the expected result(s), and if applicable the performance measure(s), in your Division's main programme (under Section 9 of the Programme Budget) to which this RPTC activity would contribute, referencing the specific paragraph of Section 9 in each case.",
+      "repeating": true,
+      "fields": [
+        {"id": "mandate", "label": "Mandate", "type": "rich_text", "constraints": {"required": true}},
+        {"id": "contribution", "label": "RPTC Activity Contribution", "type": "rich_text", "constraints": {"required": true}}
+      ]
+    },
+    {
+      "id": "additional_mandate_info",
+      "title": "Additional mandate information",
+      "guidance": "Please add any additional relevant information (optional).",
+      "fields": [
+        {"id": "additional_info", "label": "Additional relevant information", "type": "rich_text"}
+      ]
+    },
+    {
+      "id": "recipient_country_request",
+      "title": "Recipient Country Request",
+      "guidance": "Please indicate if this activity has been developed in response to a direct country request, to provide support to a specific Member State, made either by a Government (i.e. ministries/departments, Permanent Missions), a UN Resident Coordinator's Office or another UN entity or intergovernmental organization. Please reference the entry or entries in DESA's Capacity Development Requests Log if so. For activities developed in response to other types of demand, please list the evidence of demand from the target countries (e.g., area identified as a priority in the country's UN Sustainable Development Cooperation Framework (UNSDCF) — please list the relevant UNSDCF outcome if so, in the Voluntary National Review (VNR), or in one or more country needs assessments).",
+      "fields": [
+        {"id": "recipient_country_request", "label": "Recipient Country Request", "type": "rich_text"}
+      ]
+    },
+    {
+      "id": "sdgs",
+      "title": "SDGs",
+      "guidance": "Please list the most relevant SDG targets that this activity contributes towards.",
+      "fields": [
+        {"id": "sdg_targets", "label": "Most relevant SDG targets", "type": "sdg_target_list", "constraints": {"required": true}},
+        {"id": "themes", "label": "Themes / Sub-themes", "type": "checkbox_group", "guidance": "Please indicate the theme and sub-theme of this RPTC activity. These are suggestions rather than an exhaustive list of themes.", "constraints": {"options": ["Economic Analysis and Policy", "Financing for Sustainable Development", "Forests", "Population", "Public Administration and Digital Government", "Social Development", "Statistics", "Sustainable Development"]}},
+        {"id": "sub_themes", "label": "Sub-theme(s)", "type": "rich_text", "guidance": "Sub-theme(s) corresponding to the selected theme(s) above."},
+        {"id": "additional_themes", "label": "Additional themes", "type": "text", "guidance": "Please add additional themes here (optional)."}
+      ]
+    },
+    {
+      "id": "target_group",
+      "title": "Target group",
+      "guidance": "Please identify as clearly and concisely as possible the target group in developing countries whose capacities this activity would build. For training activities, study tours, meetings, and other applicable activities, explain how participants have been/will be selected, particularly with respect to achieving a balance between genders or different ethnic groups, and attach a list of participants.",
+      "fields": [
+        {"id": "target_group", "label": "Target group", "type": "rich_text", "constraints": {"required": true}}
+      ]
+    },
+    {
+      "id": "capacities",
+      "title": "Capacities to be developed",
+      "guidance": "Briefly list the specific capacity(ies) this RPTC activity aims to develop in the above-mentioned target group, achievable within the scope of the activity, and the related indicator(s) of achievement.",
+      "repeating": true,
+      "fields": [
+        {"id": "capacity", "label": "Capacity Description", "type": "rich_text", "constraints": {"required": true}},
+        {"id": "indicator", "label": "Indicator", "type": "rich_text", "constraints": {"required": true}}
+      ]
+    },
+    {
+      "id": "activities",
+      "title": "Main activities and timelines",
+      "guidance": "Please list the proposed activities (e.g., each training workshop (in-person or online); advisory services (in-person or online); study tours; development of capacity building tools). Attach a draft programme/agenda and, if applicable, draft terms of reference for consultants/resource persons as annexes. If the activities are scheduled to take place over a period of more than three (3) months, please include a detailed timeline in this section.",
+      "repeating": true,
+      "fields": [
+        {"id": "activity_title", "label": "Activity Title", "type": "text", "constraints": {"required": true}},
+        {"id": "activity_planned_start_quarter", "label": "Activity Planned Start Quarter", "type": "quarter_year"},
+        {"id": "activity_planned_end_quarter", "label": "Activity Planned End Date Quarter", "type": "quarter_year"}
+      ]
+    },
+    {
+      "id": "coherence",
+      "title": "Coherence and complementary work",
+      "guidance": "a. Please highlight any relevant relationship of this activity to proposed or existing projects funded by the Development Account or extrabudgetary resources. b. What other work is being done—and what has been done in the past—to address this problem, and how would this RPTC activity add value to it? c. How will this RPTC activity link with ongoing complementary work, if at all (e.g., joint work plan, UNSDCF Joint Output)?",
+      "fields": [
+        {"id": "coherence", "label": "Coherence and complementary work", "type": "rich_text"}
+      ]
+    },
+    {
+      "id": "inclusion",
+      "title": "Gender equality, human rights, disability inclusion and Leave No One Behind",
+      "guidance": "Briefly describe any analysis that has been prepared (either by DESA or other organizations) that informs how this activity—or the broader programme to which it contributes—can advance gender equality, human rights, disability inclusion and the UN's agenda to Leave No One Behind. How will this activity take the analysis into account? For systematic tagging, please include ratings of the project according to the scale below (separate ratings for gender and disability).",
+      "fields": [
+        {"id": "narrative", "label": "Analysis narrative", "type": "rich_text"},
+        {"id": "gender_rating", "label": "Gender rating", "type": "rating_scale", "guidance": "0 - no reflection of gender; 1 - limited reflection of gender; 2a - potential to contribute significantly to gender equality; 2b - principal purpose is to promote gender equality.", "constraints": {"options": ["0", "1", "2a", "2b"]}},
+        {"id": "disability_rating", "label": "Disability rating", "type": "rating_scale", "guidance": "0 - no reflection of disability; 1 - limited reflection of disability; 2a - potential to contribute significantly to disability inclusion; 2b - principal purpose is to promote disability inclusion.", "constraints": {"options": ["0", "1", "2a", "2b"]}}
+      ]
+    },
+    {
+      "id": "inputs",
+      "title": "Inputs",
+      "guidance": "Please describe the specific inputs (cash and in-kind) that will be provided by DESA, by the recipient Government(s), and by other stakeholders.",
+      "fields": [
+        {"id": "desa_inkind", "label": "DESA - In-kind", "type": "rich_text"},
+        {"id": "desa_cash", "label": "DESA - Cash", "type": "rich_text"},
+        {"id": "desa_comments", "label": "DESA - Comments", "type": "rich_text"},
+        {"id": "recipient_inkind", "label": "Recipient Governments - In-kind", "type": "rich_text"},
+        {"id": "recipient_cash", "label": "Recipient Governments - Cash", "type": "rich_text"},
+        {"id": "recipient_comments", "label": "Recipient Governments - Comments", "type": "rich_text"},
+        {"id": "other_inkind", "label": "Other stakeholders - In-kind", "type": "rich_text"},
+        {"id": "other_cash", "label": "Other stakeholders - Cash", "type": "rich_text"},
+        {"id": "other_comments", "label": "Other stakeholders - Comments", "type": "rich_text"}
+      ]
+    },
+    {
+      "id": "financials",
+      "title": "Financial Requirements",
+      "guidance": "Provide a breakdown of costs. Where applicable, the breakdown of costs should include descriptions i.e. airfare, number of days, DSA rate, fees and any other relevant costs.",
+      "fields": [
+        {"id": "staff_travel", "label": "I. Staff travel (Airfare, Terminal expenses, DSA)", "type": "currency", "constraints": {"min_value": 0}},
+        {"id": "participants_travel", "label": "II. Participants travel (Airfare, Terminal expenses, DSA)", "type": "currency", "constraints": {"min_value": 0}},
+        {"id": "consultants", "label": "III. Consultants (Fees, Airfare, DSA, Terminal expenses)", "type": "currency", "constraints": {"min_value": 0}},
+        {"id": "conference_services", "label": "IV. Conference services (Venue hire, interpretation, etc.)", "type": "currency", "constraints": {"min_value": 0}},
+        {"id": "total", "label": "V. Total Project Cost", "type": "currency", "constraints": {"required": true, "min_value": 0}},
+        {"id": "supplementary_funding", "label": "Supplementary funding or back-to-back arrangements", "type": "rich_text", "guidance": "Please provide information of any supplementary funding or whether this is organized in conjunction with another event (e.g., back-to-back with an expert group meeting (EGM) funded by the UN Regular Budget), including details such as number of DESA servicing staff and funded participants."}
+      ]
+    }
+  ]
+}
