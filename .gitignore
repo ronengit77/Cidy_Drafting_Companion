@@ -30,3 +30,6 @@ Thumbs.db
 
 # Python build artifacts
 *.egg-info/
+
+# Local env / secrets
+.env
