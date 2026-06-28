@@ -19,7 +19,7 @@ def _create_schema():
 def db_session():
     connection = engine.connect()
     transaction = connection.begin()
-    session = Session(bind=connection, expire_on_commit=False)
+    session = Session(bind=connection, expire_on_commit=False, join_transaction_mode="create_savepoint")
     try:
         yield session
     finally:
