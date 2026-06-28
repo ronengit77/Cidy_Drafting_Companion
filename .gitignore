@@ -27,3 +27,6 @@ Thumbs.db
 
 # Subagent-driven-development scratch (ledger, briefs, diffs)
 .superpowers/
+
+# Python build artifacts
+*.egg-info/
