@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: cidy
+      POSTGRES_PASSWORD: cidy
+      POSTGRES_DB: cidy
+    ports:
+      - "5432:5432"
+    volumes:
+      - cidy_pgdata:/var/lib/postgresql/data
+
+volumes:
+  cidy_pgdata:

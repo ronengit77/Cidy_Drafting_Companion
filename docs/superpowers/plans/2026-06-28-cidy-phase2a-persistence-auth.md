@@ -1172,3 +1172,4 @@ At the end of this plan the backend runs locally (`uvicorn cidy_api.app:create_a
 - Real email delivery (`email_sink.send_magic_link` non-dev path) via SES.
 - The Mangum Lambda handler and SAM `template.yaml` (API Gateway, Lambda, RDS/Aurora, S3, SES) — deployment was intentionally deferred to keep 2A locally testable.
 - Authorization (owner/collaborator/reviewer) helpers attach when artifacts exist.
+- **Deploy config (security):** the SAM/Lambda environment MUST set `CIDY_DEV_MODE=false` and a strong `CIDY_JWT_SECRET` (≥32 bytes). `dev_mode` defaults to `True`, and `/auth/magic-link` returns the raw magic-link token (`dev_link`) while `dev_mode` is true — leaving it true in production would leak tokens. The config guard added in Phase 2A (commit `13c274a`) already refuses to boot with the dev/short JWT secret when `dev_mode=false`; the SAM template must wire both env vars.
