@@ -24,3 +24,6 @@ Thumbs.db
 # Local artifacts / temp exports
 /tmp/
 *.tmp
+
+# Subagent-driven-development scratch (ledger, briefs, diffs)
+.superpowers/

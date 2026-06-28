@@ -1,0 +1,98 @@
+{
+  "schema_id": "da-concept-note",
+  "version": "19th-tranche-2025-09",
+  "fund": "DA",
+  "artifact_type": "concept_note",
+  "title": "Template for Concept Notes (19th Tranche of the Development Account)",
+  "sections": [
+    {
+      "id": "background",
+      "title": "Background",
+      "guidance": "Max. 1.5 pages.",
+      "fields": [
+        {"id": "fascicle_title", "label": "Fascicle Note Title", "type": "text", "constraints": {"required": true}},
+        {"id": "implementing_entity", "label": "Implemented by (Implementing Entity)", "type": "text", "constraints": {"required": true}},
+        {"id": "joint_entities", "label": "Jointly with (joint implementing entities)", "type": "text"},
+        {"id": "collaborating_entities", "label": "In collaboration with", "type": "text"},
+        {"id": "total_budget", "label": "Total budget (USD thousands)", "type": "currency", "constraints": {"min_value": 0}},
+        {"id": "sdg_targets", "label": "Relationship to SDGs: targets", "type": "sdg_target_list", "guidance": "List in ascending order, max. of 10.", "constraints": {"max_items": 10, "order": "ascending"}},
+        {"id": "objective", "label": "Objective", "type": "rich_text", "constraints": {"required": true}},
+        {"id": "project_plan", "label": "Project plan", "type": "rich_text", "constraints": {"required": true}},
+        {"id": "expected_progress", "label": "Expected progress towards the objective and performance measures", "type": "rich_text", "constraints": {"required": true}},
+        {"id": "budget_summary", "label": "Budget summary (thousands of United States dollars)", "type": "budget_table", "guidance": "Other staff costs, Consultants, Travel of staff, Contractual services, General operating expenses, Grants and contributions, Total.", "constraints": {"required": true}}
+      ]
+    },
+    {
+      "id": "fascicle_data",
+      "title": "Additional data needed for the fascicle",
+      "guidance": "Do not change the categories or format.",
+      "fields": [
+        {"id": "sids", "label": "Supports SIDS", "type": "boolean"},
+        {"id": "lldc", "label": "Supports LLDCs", "type": "boolean"},
+        {"id": "ldc", "label": "Supports LDCs", "type": "boolean"},
+        {"id": "regions", "label": "Regions supported", "type": "checkbox_group", "constraints": {"options": ["Africa", "Asia and the Pacific", "Middle East and North Africa", "Latin America and the Caribbean", "Europe and Central Asia"]}},
+        {"id": "sdgs_contributed", "label": "SDGs the project contributes to", "type": "checkbox_group", "constraints": {"options": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"]}},
+        {"id": "partnership_types", "label": "Partnership types", "type": "checkbox_group", "constraints": {"options": ["Development Account entities", "UN System (excluding RCOs)", "Other international/regional organizations"]}},
+        {"id": "consultancy_requirements", "label": "Summary of consultancy requirements (work-months, not work-days)", "type": "budget_table", "guidance": "Rows: International, Regional, National, Total. Columns: Number of consultants, Number of work-months, Cost (thousands of USD)."},
+        {"id": "deliverables_seminars_workshops", "label": "Quantified deliverables: Seminars, workshops, and training events (# of days)", "type": "number", "constraints": {"min_value": 0}},
+        {"id": "deliverables_technical_materials", "label": "Quantified deliverables: Technical materials (# of materials)", "type": "number", "constraints": {"min_value": 0}},
+        {"id": "deliverables_consultation_advice", "label": "Non-quantified deliverables: Consultation, advice, and advocacy (included or not)", "type": "boolean"},
+        {"id": "deliverables_databases", "label": "Non-quantified deliverables: Databases and substantive digital materials (included or not)", "type": "boolean"}
+      ]
+    },
+    {
+      "id": "outcomes_outputs",
+      "title": "Outcomes and Outputs",
+      "repeating": true,
+      "fields": [
+        {"id": "outcome", "label": "Outcome (OC)", "type": "rich_text", "constraints": {"required": true}},
+        {"id": "outputs", "label": "Outputs", "type": "repeating_group", "fields": [
+          {"id": "output", "label": "Output (OP)", "type": "rich_text", "constraints": {"required": true}}
+        ]}
+      ]
+    },
+    {
+      "id": "un_coordination",
+      "title": "UN system coordination",
+      "guidance": "Engagement with RCOs.",
+      "fields": [
+        {"id": "rco_country", "label": "Target country", "type": "text"},
+        {"id": "rco_involvement", "label": "Brief description of planned RCO involvement", "type": "rich_text"}
+      ]
+    },
+    {
+      "id": "partnerships",
+      "title": "Partnerships",
+      "fields": [
+        {"id": "partnerships_text", "label": "Partnerships", "type": "rich_text"}
+      ]
+    },
+    {
+      "id": "budget_narrative",
+      "title": "Budget narrative",
+      "guidance": "By budget class (015, 105, 115, 120, 125, 145).",
+      "fields": [
+        {"id": "gta_015", "label": "Other staff costs - GTA (015)", "type": "rich_text", "guidance": "Temporary assistance to perform tasks, in support of outputs OP#.#. Total cost of GTA for all outputs."},
+        {"id": "consultants_105", "label": "Consultants (105)", "type": "repeating_group", "guidance": "International, regional, and national consultants: cost, number of work-months, tasks, and supported outputs.", "fields": [
+          {"id": "consultant_category", "label": "Category of consultant (International / Regional / National)", "type": "single_select", "constraints": {"options": ["International", "Regional", "National"], "required": true}},
+          {"id": "consultant_task_description", "label": "Task(s) and supported outputs", "type": "rich_text"},
+          {"id": "consultant_work_months", "label": "Number of work-months", "type": "number", "constraints": {"min_value": 0}},
+          {"id": "consultant_cost", "label": "Total cost (USD)", "type": "currency", "constraints": {"min_value": 0}}
+        ]},
+        {"id": "travel_115", "label": "Travel of staff (115)", "type": "repeating_group", "guidance": "UN staff from the lead entity, and staff from other UN DA implementing/collaborating entities: missions, purpose, supported outputs, cost.", "fields": [
+          {"id": "travel_staff_category", "label": "Staff category (Lead entity / Other UN DA entities)", "type": "single_select", "constraints": {"options": ["Lead entity staff", "Other UN DA implementing/collaborating entity staff"]}},
+          {"id": "travel_purpose", "label": "Purpose and supported outputs", "type": "rich_text"},
+          {"id": "travel_num_missions", "label": "Number of missions", "type": "number", "constraints": {"min_value": 0}},
+          {"id": "travel_cost", "label": "Total cost (USD)", "type": "currency", "constraints": {"min_value": 0}}
+        ]},
+        {"id": "contractual_120", "label": "Contractual services (120)", "type": "rich_text", "guidance": "Description of services, duration, cost of each contract, supported outputs, and recipient country if possible. Total cost of contractual services."},
+        {"id": "goe_125", "label": "General operating expenses (125)", "type": "rich_text", "guidance": "Communications and other general operating expenses, in support of outputs. Total cost of general operating expenses. (Conference-related costs, including venue rental for trainings/workshops/EGMs, are listed in this budget class.)"},
+        {"id": "grants_145", "label": "Grants and contributions (145)", "type": "repeating_group", "guidance": "Workshops/seminars/EGMs, study tours, and grants to implementing partners. Note: cannot cover conference services (interpretation, venue rental); only participant travel costs.", "fields": [
+          {"id": "grant_activity_type", "label": "Activity type", "type": "single_select", "constraints": {"options": ["Workshop / Seminar / Expert Group Meeting", "Study Tour", "Grant to implementing partner"]}},
+          {"id": "grant_activity_description", "label": "Description (title, country, supported output, duration in days, participants)", "type": "rich_text"},
+          {"id": "grant_cost", "label": "Total cost (USD)", "type": "currency", "constraints": {"min_value": 0}}
+        ]}
+      ]
+    }
+  ]
+}
