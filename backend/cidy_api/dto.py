@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import uuid
+from datetime import datetime
 from typing import Literal
 
 from pydantic import BaseModel, EmailStr
@@ -38,3 +39,37 @@ class CollaboratorOut(BaseModel):
     user_id: uuid.UUID
     email: str
     role: str
+
+
+class ArtifactCreate(BaseModel):
+    schema_id: str
+    title: str = ""
+    content: dict = {}
+
+
+class ArtifactUpdate(BaseModel):
+    expected_version_no: int
+    title: str
+    content: dict
+
+
+class ArtifactSummary(BaseModel):
+    id: uuid.UUID
+    schema_id: str
+    schema_version: str
+    title: str
+    version_no: int
+    status: str
+    updated_at: datetime
+
+
+class ArtifactDetail(ArtifactSummary):
+    owner_id: uuid.UUID
+    content: dict
+    created_at: datetime
+
+
+class VersionSummary(BaseModel):
+    version_no: int
+    title: str
+    created_at: datetime
