@@ -2,7 +2,7 @@ from pathlib import Path
 
 from cidy.reference.sdg import load_sdg_framework_file
 
-DATA_PATH = Path(__file__).resolve().parents[3] / "data" / "sdg_framework.json"
+DATA_PATH = Path(__file__).resolve().parents[2] / "data" / "sdg_framework.json"
 
 
 def test_framework_loads_all_goals():

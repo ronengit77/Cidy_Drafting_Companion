@@ -3,7 +3,7 @@ from pathlib import Path
 from cidy.schema.loader import load_schema_file
 
 SCHEMA_PATH = (
-    Path(__file__).resolve().parents[3] / "schemas" / "rptc-activity-proposal.v2024.json"
+    Path(__file__).resolve().parents[2] / "schemas" / "rptc-activity-proposal.v2024.json"
 )
 
 

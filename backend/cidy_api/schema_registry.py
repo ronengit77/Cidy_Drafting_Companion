@@ -9,9 +9,9 @@ from cidy.reference.sdg import SDGFramework, load_sdg_framework_file
 from cidy.schema.loader import load_schema_file
 from cidy.schema.models import TemplateSchema
 
-_REPO_ROOT = Path(__file__).resolve().parents[2]
-_SCHEMAS_DIR = _REPO_ROOT / "schemas"
-_SDG_PATH = _REPO_ROOT / "data" / "sdg_framework.json"
+_BACKEND_ROOT = Path(__file__).resolve().parents[1]
+_SCHEMAS_DIR = _BACKEND_ROOT / "schemas"
+_SDG_PATH = _BACKEND_ROOT / "data" / "sdg_framework.json"
 
 
 class SchemaInfo(BaseModel):

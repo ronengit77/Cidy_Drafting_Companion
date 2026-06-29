@@ -54,3 +54,10 @@ def test_requirements_lists_runtime_deps():
     reqs = (Path(__file__).resolve().parents[2] / "requirements.txt").read_text(encoding="utf-8")
     for pkg in ("fastapi", "mangum", "sqlalchemy", "psycopg", "pydantic", "pyjwt"):
         assert pkg in reqs
+
+
+def test_schema_and_data_dirs_are_inside_code_uri():
+    # CodeUri is backend/; the app reads these at runtime, so they must be packaged.
+    backend_root = Path(__file__).resolve().parents[2]
+    assert (backend_root / "schemas").is_dir()
+    assert (backend_root / "data" / "sdg_framework.json").is_file()

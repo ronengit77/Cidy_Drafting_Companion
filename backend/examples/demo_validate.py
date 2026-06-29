@@ -16,7 +16,7 @@ from cidy.artifact.validation import validate_artifact
 from cidy.reference.sdg import load_sdg_framework_file
 from cidy.schema.loader import load_schema_file
 
-ROOT = Path(__file__).resolve().parents[2]  # repo root
+ROOT = Path(__file__).resolve().parents[1]  # backend/ root
 
 
 def main() -> None:
