@@ -12,6 +12,7 @@ dependencies = [
   "psycopg[binary]>=3.1,<4",
   "alembic>=1.13,<2",
   "pyjwt>=2.8,<3",
+  "mangum>=0.17,<1",
 ]
 
 [project.optional-dependencies]
