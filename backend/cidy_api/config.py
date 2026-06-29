@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from functools import lru_cache
 
-from pydantic import model_validator
+from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 DEV_JWT_SECRET = "dev-only-insecure-secret-change-me-in-production"
@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     magic_link_expire_minutes: int = 15
     app_base_url: str = "http://localhost:8000"
     dev_mode: bool = True
+    openai_api_key: str = Field(default="", validation_alias="OPENAI_API_KEY")
+    llm_model: str = "gpt-4o-mini"
 
     @model_validator(mode="after")
     def _guard_production_secret(self) -> "Settings":
