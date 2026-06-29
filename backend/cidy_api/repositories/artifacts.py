@@ -75,17 +75,20 @@ def update_artifact(
     content: dict,
     author_id: uuid.UUID,
 ) -> Artifact:
-    if artifact.version_no != expected_version_no:
+    locked = session.execute(
+        select(Artifact).where(Artifact.id == artifact.id).with_for_update()
+    ).scalar_one()
+    if locked.version_no != expected_version_no:
         raise ConflictError(
-            f"expected version {expected_version_no}, current is {artifact.version_no}"
+            f"expected version {expected_version_no}, current is {locked.version_no}"
         )
-    _snapshot(session, artifact, author_id)
-    artifact.title = title
-    artifact.content = content
-    artifact.version_no += 1
-    artifact.updated_at = datetime.now(timezone.utc)
+    _snapshot(session, locked, author_id)
+    locked.title = title
+    locked.content = content
+    locked.version_no += 1
+    locked.updated_at = datetime.now(timezone.utc)
     session.flush()
-    return artifact
+    return locked
 
 
 def list_versions(session: Session, artifact_id: uuid.UUID) -> list[ArtifactVersion]:
@@ -100,17 +103,21 @@ def list_versions(session: Session, artifact_id: uuid.UUID) -> list[ArtifactVers
 def restore_version(
     session: Session, artifact: Artifact, target_version_no: int, *, author_id: uuid.UUID
 ) -> Artifact:
-    stmt = select(ArtifactVersion).where(
-        ArtifactVersion.artifact_id == artifact.id,
-        ArtifactVersion.version_no == target_version_no,
-    )
-    target = session.execute(stmt).scalar_one_or_none()
+    locked = session.execute(
+        select(Artifact).where(Artifact.id == artifact.id).with_for_update()
+    ).scalar_one()
+    target = session.execute(
+        select(ArtifactVersion).where(
+            ArtifactVersion.artifact_id == locked.id,
+            ArtifactVersion.version_no == target_version_no,
+        )
+    ).scalar_one_or_none()
     if target is None:
         raise VersionNotFound(f"no version {target_version_no}")
-    _snapshot(session, artifact, author_id)
-    artifact.title = target.title
-    artifact.content = target.content
-    artifact.version_no += 1
-    artifact.updated_at = datetime.now(timezone.utc)
+    _snapshot(session, locked, author_id)
+    locked.title = target.title
+    locked.content = target.content
+    locked.version_no += 1
+    locked.updated_at = datetime.now(timezone.utc)
     session.flush()
-    return artifact
+    return locked
