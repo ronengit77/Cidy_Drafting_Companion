@@ -1,0 +1,105 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  CIdy Drafting Companion backend (DEV deployment). NOTE: this posture is dev-only —
+  the database is publicly reachable and the Lambda runs outside a VPC. Do not use as-is
+  for production; harden with a VPC, private RDS, and RDS Proxy first.
+
+Parameters:
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC for the database security group (e.g. your account's default VPC).
+  JwtSecret:
+    Type: String
+    NoEcho: true
+    MinLength: 32
+    Description: Strong JWT signing secret (>= 32 characters).
+  AppBaseUrl:
+    Type: String
+    Default: https://placeholder.execute-api.amazonaws.com
+    Description: Public base URL of the deployed API (re-deploy with the real ApiUrl after first deploy).
+  DbName:
+    Type: String
+    Default: cidy
+  DbMasterUsername:
+    Type: String
+    Default: cidy
+  DbMasterPassword:
+    Type: String
+    NoEcho: true
+    MinLength: 8
+    Description: Master password for the RDS PostgreSQL instance.
+  DbInstanceClass:
+    Type: String
+    Default: db.t3.micro
+  DbAllocatedStorage:
+    Type: Number
+    Default: 20
+
+Resources:
+  CidyDbSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: CIdy RDS access (DEV - open to the internet on 5432)
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 5432
+          ToPort: 5432
+          CidrIp: 0.0.0.0/0
+          Description: DEV ONLY - publicly reachable Postgres
+
+  CidyDatabase:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: Delete
+    Properties:
+      Engine: postgres
+      DBName: !Ref DbName
+      MasterUsername: !Ref DbMasterUsername
+      MasterUserPassword: !Ref DbMasterPassword
+      DBInstanceClass: !Ref DbInstanceClass
+      AllocatedStorage: !Ref DbAllocatedStorage
+      PubliclyAccessible: true
+      VPCSecurityGroups:
+        - !Ref CidyDbSecurityGroup
+
+  CidyHttpApi:
+    Type: AWS::Serverless::HttpApi
+
+  CidyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: backend/
+      Handler: cidy_api.lambda_handler.handler
+      Runtime: python3.12
+      Architectures:
+        - x86_64
+      Timeout: 30
+      MemorySize: 512
+      Environment:
+        Variables:
+          CIDY_DATABASE_URL: !Sub "postgresql+psycopg://${DbMasterUsername}:${DbMasterPassword}@${CidyDatabase.Endpoint.Address}:${CidyDatabase.Endpoint.Port}/${DbName}"
+          CIDY_JWT_SECRET: !Ref JwtSecret
+          CIDY_DEV_MODE: "false"
+          CIDY_APP_BASE_URL: !Ref AppBaseUrl
+      Events:
+        Proxy:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref CidyHttpApi
+            Path: /{proxy+}
+            Method: ANY
+        Root:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref CidyHttpApi
+            Path: /
+            Method: ANY
+
+Outputs:
+  ApiUrl:
+    Description: Base URL of the deployed HTTP API
+    Value: !Sub "https://${CidyHttpApi}.execute-api.${AWS::Region}.amazonaws.com"
+  DbEndpoint:
+    Description: RDS endpoint address
+    Value: !GetAtt CidyDatabase.Endpoint.Address

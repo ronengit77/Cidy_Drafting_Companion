@@ -2,7 +2,7 @@ from pathlib import Path
 
 from cidy.schema.loader import load_schema_file
 
-SCHEMA_PATH = Path(__file__).resolve().parents[3] / "schemas" / "da-concept-note.v19.json"
+SCHEMA_PATH = Path(__file__).resolve().parents[2] / "schemas" / "da-concept-note.v19.json"
 
 
 def test_da_schema_loads():

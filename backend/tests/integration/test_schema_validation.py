@@ -24,7 +24,7 @@ from cidy.artifact.validation import validate_artifact
 from cidy.reference.sdg import load_sdg_framework_file
 from cidy.schema.loader import load_schema_file
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[2]
 DA_SCHEMA_PATH = ROOT / "schemas" / "da-concept-note.v19.json"
 RPTC_SCHEMA_PATH = ROOT / "schemas" / "rptc-activity-proposal.v2024.json"
 SDG_FRAMEWORK_PATH = ROOT / "data" / "sdg_framework.json"
