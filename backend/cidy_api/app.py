@@ -4,6 +4,7 @@ from fastapi import FastAPI
 
 from cidy_api.routers import auth as auth_router
 from cidy_api.routers import me as me_router
+from cidy_api.routers import schemas as schemas_router
 
 
 def create_app() -> FastAPI:
@@ -15,4 +16,5 @@ def create_app() -> FastAPI:
 
     app.include_router(auth_router.router)
     app.include_router(me_router.router)
+    app.include_router(schemas_router.router)
     return app
