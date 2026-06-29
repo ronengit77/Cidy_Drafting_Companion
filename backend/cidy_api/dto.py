@@ -73,3 +73,17 @@ class VersionSummary(BaseModel):
     version_no: int
     title: str
     created_at: datetime
+
+
+class IssueOut(BaseModel):
+    path: str
+    severity: str
+    message: str
+
+
+class ValidationReportOut(BaseModel):
+    is_valid: bool
+    required_total: int
+    required_filled: int
+    missing: list[str]
+    issues: list[IssueOut]

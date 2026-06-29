@@ -5,6 +5,8 @@ import uuid
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
+from cidy.artifact.models import Artifact as CanonicalArtifact
+from cidy.artifact.validation import validate_artifact
 from cidy_api import authz, schema_registry
 from cidy_api.db import get_session
 from cidy_api.deps import get_current_user
@@ -13,6 +15,8 @@ from cidy_api.dto import (
     ArtifactDetail,
     ArtifactSummary,
     ArtifactUpdate,
+    IssueOut,
+    ValidationReportOut,
     VersionSummary,
 )
 from cidy_api.models_db import Artifact, User
@@ -117,3 +121,33 @@ def restore(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
     session.commit()
     return _detail(artifact)
+
+
+@router.post("/{artifact_id}/check", response_model=ValidationReportOut)
+def check(
+    artifact_id: uuid.UUID,
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+) -> ValidationReportOut:
+    artifact = authz.require_artifact(session, current_user, artifact_id, "read")
+    schema = schema_registry.get_schema(artifact.schema_id)
+    if schema is None:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="artifact references an unknown schema",
+        )
+    canonical = CanonicalArtifact(
+        schema_id=artifact.schema_id,
+        schema_version=artifact.schema_version,
+        title=artifact.title,
+        values=artifact.content,
+        version_no=artifact.version_no,
+    )
+    report = validate_artifact(schema, canonical, schema_registry.get_sdg_framework())
+    return ValidationReportOut(
+        is_valid=report.is_valid,
+        required_total=report.required_total,
+        required_filled=report.required_filled,
+        missing=report.missing,
+        issues=[IssueOut(path=i.path, severity=i.severity, message=i.message) for i in report.issues],
+    )
