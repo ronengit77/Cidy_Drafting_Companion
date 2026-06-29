@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import uuid
+from typing import Literal
 
 from pydantic import BaseModel, EmailStr
 
@@ -26,3 +27,14 @@ class TokenResponse(BaseModel):
 class UserResponse(BaseModel):
     id: uuid.UUID
     email: str
+
+
+class CollaboratorAdd(BaseModel):
+    email: EmailStr
+    role: Literal["editor", "reviewer"]
+
+
+class CollaboratorOut(BaseModel):
+    user_id: uuid.UUID
+    email: str
+    role: str
