@@ -1544,3 +1544,5 @@ At the end of this plan the backend serves the full artifact lifecycle locally: 
 - Export/import (Word/PDF/JSON) is Phase 5; the `/check` endpoint and `content` JSONB are the inputs it will render from.
 - LLM-assisted drafting, SDG suggestion, and GA-resolution search are Phases 3–4; they will read/write the same artifact `content`.
 - `status` is currently always `"draft"`; a status-transition workflow can be added when submission/review states are needed.
+- **Concurrency backstop (from 2B final review):** `update_artifact`/`restore_version` now take a `SELECT … FOR UPDATE` row lock (commit `bb59f37`) so concurrent edits correctly 409 instead of silently losing updates. As defense-in-depth, add a `UNIQUE(artifact_id, version_no)` constraint on `artifact_versions` (do it in a clean migration during 2C, since the dev DB schema is currently built via `create_all`).
+- **Migration verification:** the test suite builds the schema via `Base.metadata.create_all`; add a CI/test step that runs `alembic upgrade head` against a pristine database, since production correctness depends on the migrations, not `create_all`.
