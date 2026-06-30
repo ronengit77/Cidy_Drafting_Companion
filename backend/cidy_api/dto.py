@@ -87,3 +87,17 @@ class ValidationReportOut(BaseModel):
     required_filled: int
     missing: list[str]
     issues: list[IssueOut]
+
+
+class ShapeFieldRequest(BaseModel):
+    section_id: str
+    field_id: str
+    raw_input: str
+
+
+class ShapeFieldResponse(BaseModel):
+    shaped_text: str
+
+
+class CoherenceResponse(BaseModel):
+    assessment: str
