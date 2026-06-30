@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     dev_mode: bool = True
     openai_api_key: str = Field(default="", validation_alias="OPENAI_API_KEY")
     llm_model: str = "gpt-4o-mini"
+    cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
 
     @model_validator(mode="after")
     def _guard_production_secret(self) -> "Settings":
