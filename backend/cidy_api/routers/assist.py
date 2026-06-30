@@ -8,8 +8,9 @@ from sqlalchemy.orm import Session
 from cidy_api import authz, schema_registry
 from cidy_api.db import get_session
 from cidy_api.deps import get_current_user
-from cidy_api.dto import CoherenceResponse, ShapeFieldRequest, ShapeFieldResponse
+from cidy_api.dto import CoherenceResponse, SDGSuggestResponse, SDGSuggestionOut, ShapeFieldRequest, ShapeFieldResponse
 from cidy_api.llm import assist
+from cidy_api.llm.sdg_suggest import suggest_sdg_targets
 from cidy_api.llm.base import LLMError, LLMProvider
 from cidy_api.llm.deps import get_llm_provider
 from cidy_api.models_db import User
@@ -83,3 +84,37 @@ def coherence(
     except LLMError as exc:
         raise _LLM_DOWN from exc
     return CoherenceResponse(assessment=assessment)
+
+
+@router.post("/{artifact_id}/assist/sdg-suggest", response_model=SDGSuggestResponse)
+def sdg_suggest(
+    artifact_id: uuid.UUID,
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+    provider: LLMProvider | None = Depends(get_llm_provider),
+) -> SDGSuggestResponse:
+    if provider is None:
+        raise _NO_LLM
+    artifact = authz.require_artifact(session, current_user, artifact_id, "read")
+    schema = schema_registry.get_schema(artifact.schema_id)
+    if schema is None:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="artifact references an unknown schema",
+        )
+    context = assist.render_artifact_summary(schema, artifact.content)
+    try:
+        results = suggest_sdg_targets(
+            provider,
+            schema_registry.get_sdg_framework(),
+            fund=schema.fund,
+            artifact_type=schema.artifact_type,
+            context=context,
+        )
+    except LLMError as exc:
+        raise _LLM_DOWN from exc
+    return SDGSuggestResponse(
+        suggestions=[
+            SDGSuggestionOut(target=r.target, title=r.title, rationale=r.rationale) for r in results
+        ]
+    )

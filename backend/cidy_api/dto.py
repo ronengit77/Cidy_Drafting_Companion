@@ -101,3 +101,13 @@ class ShapeFieldResponse(BaseModel):
 
 class CoherenceResponse(BaseModel):
     assessment: str
+
+
+class SDGSuggestionOut(BaseModel):
+    target: str
+    title: str
+    rationale: str
+
+
+class SDGSuggestResponse(BaseModel):
+    suggestions: list[SDGSuggestionOut]
